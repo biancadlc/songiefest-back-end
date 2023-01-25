@@ -14,8 +14,8 @@ from autoslug import AutoSlugField # makes meaningful URLS users/thao
 class User(models.Model):  
     username = models.CharField(max_length=36, null=False)
     first_name = models.CharField(max_length=36, null=False)
-    last_name = models.CharField(max=36, null=False)
-    email = models.CharField(max=36, null=False)
+    last_name = models.CharField(max_length=36, null=False)
+    email = models.CharField(max_length=36, null=False)
     password = models.CharField(max_length=16, null=False)
     date_modified = models.DateTimeField(auto_now=True)
     date_published = models.DateTimeField(auto_now_add=True)

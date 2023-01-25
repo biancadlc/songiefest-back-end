@@ -28,10 +28,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # cast here & db could be wrong?
 
 SECRET_KEY = config('SECRET_KEY')
-DEBUG = config('DEBUG', DEFAULT=True, cast=bool)
+# DEBUG = config('DEBUG', DEFAULT=True, cast=bool)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'app',
+    'app.apps.AppConfig',
 ]
 
 MIDDLEWARE = [
