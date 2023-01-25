@@ -35,8 +35,8 @@ class User(models.Model):
 # ==== MusicStats model or Profile model?? === # 
 class MusicPost(models.Model):   # post that shows music stats
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    date = models.DateField
-    songs = models.CharField(max_length=255)   
+    date = models.DateField(auto_now=True)
+    # songs = models.CharField(max_length=255)   
     date_modified = models.DateTimeField(auto_now=True)
     date_published = models.DateTimeField(auto_now_add=True)
     # is_private = models.BooleanField     stretch goal
@@ -47,7 +47,7 @@ class MusicStat(models.Model):    # actual music stats
     artist = models.CharField(max_length=255)
     album = models.CharField(max_length=255)
     music_post = models.ForeignKey(MusicPost, on_delete=models.CASCADE)
-    play_count = models.IntegerField
+    play_count = models.IntegerField(null=True)
     date_modified = models.DateTimeField(auto_now=True)
     date_published = models.DateTimeField(auto_now_add=True)
     
