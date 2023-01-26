@@ -15,7 +15,7 @@ from decouple import config
 
 
 # tells django use our custom User model not default
-AUTH_USER_MODEL = 'app.AppUser'
+AUTH_USER_MODEL = 'app.User'
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app.apps.AppConfig',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
