@@ -3,6 +3,7 @@ import datetime
 from django.utils import timezone
 from django.conf import settings 
 from autoslug import AutoSlugField # makes meaningful URLS users/thao
+# from django.utils.text import slugify
 
 # always have created at & updated at attributes (on every model)
 
@@ -14,7 +15,7 @@ from autoslug import AutoSlugField # makes meaningful URLS users/thao
 # need to hash passwords, do not store in db 
 
 class AppUser(models.Model):  
-    first_name = models.CharField(max_length=30, null=False, blank=False)
+    first_name = models.CharField(max_length=30, blank=False)
     last_name = models.CharField(max_length=30, null=False, blank=False)
     email = models.CharField(unique=True, null=False, blank=False)
     password = models.CharField(max_length=30, null=False, blank=False)
@@ -41,15 +42,24 @@ class AppUser(models.Model):
 # multiple instances of the model it references
     
 
-# ==== MusicStats model or Profile model?? === # 
+# ==== Music Post  ==== # 
+# related_name= allows for retrieve all MusicPost records for a specific AppUser
 class MusicPost(models.Model):   # post that shows music stats
     app_user = models.ForeignKey(AppUser, on_delete=models.CASCADE, related_name='music_posts')
     date = models.DateField(auto_now=True)
     # songs = models.CharField(max_length=255)   
     date_modified = models.DateTimeField(auto_now=True)
     date_published = models.DateTimeField(auto_now_add=True)
-    # is_private = models.BooleanField     stretch goal
+    # unique constraint to the date field,can't have
+    # two MusicPost records for same date
+    # could use UniqueConstraint??
     
+    # class Meta:
+    #     constraints = [
+    #         models.UniqueConstraint(fields=['name', 'email'], name='unique_user')
+    #     ]
+        
+    # user can't be registered with exact email & name 
 
 class MusicStat(models.Model):    # actual music stats
     title = models.CharField(max_length=30)
@@ -92,10 +102,11 @@ class Like(models.Model):
 class Profile(models.Model): 
     app_user = models.OneToOneField(AppUser, on_delete=models.CASCADE, related_name='profile') 
     image = models.ImageField(default='default.png', upload_to='profile_pics', blank=True) 
+    # store small bio? blank=True means it can be left blank
+    bio = models.CharField(max_length=255, blank=True)
     # use AutoSlugField, set it to make a slug from username field
     slug = AutoSlugField(populate_from='app_user.username', unique=True)
-    # store small bio? blank=True means it can be left blank
-    bio = models.CharField(max_length=255, blank=True)    
+    
     
 
     # returns URL for profle page of user by using `username` attribute 
