@@ -4,8 +4,6 @@ from django.utils import timezone
 from django.conf import settings 
 from autoslug import AutoSlugField # makes meaningful URLS users/thao
 
-
-# 2 models, 1 = user's profile, 2 = friend requests
 # always have created at & updated at attributes (on every model)
 # HOW ARE WE MAKING THE POST THAT GENERATES MUSIC STATS? DOES USER POST THAT?
 # MUSIC STATS = POST? 
@@ -13,37 +11,47 @@ from autoslug import AutoSlugField # makes meaningful URLS users/thao
 
 # changed name to AppUser to avoid confusion w/ Django's default User model
 # project's settings.py --> need to tell Django use custom model instead of default 
+
+# null=False field not allowed to have NULL value in db, default  
+# blank=False field can't be blank (validation for form)
+# need to hash passwords, do not store in db 
+
 class AppUser(models.Model):  
-    username = models.CharField(max_length=36, null=False)
-    first_name = models.CharField(max_length=36, null=False)
-    last_name = models.CharField(max_length=36, null=False)
-    email = models.CharField(max_length=36, null=False)
-    password = models.CharField(max_length=16, null=False)
+    first_name = models.CharField(max_length=30, null=False, blank=False)
+    last_name = models.CharField(max_length=30, null=False, blank=False)
+    email = models.CharField(unique=True, null=False, blank=False)
+    password = models.CharField(max_length=30, null=False, blank=False)
+    username = models.CharField(max_length=30, null=False, blank=False, unique=True)
     date_modified = models.DateTimeField(auto_now=True)
     date_published = models.DateTimeField(auto_now_add=True)
+    lastfm_username = models.CharField(max_length=30, null=False, blank=False, unique=True)
+    lastfm_password = models.CharField(max_length=30, null=False, blank=False, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     
-    # lastfm username & password? (CharField)
-    # spotify_access_token & spotify_refresh_token? (CharField)
-    # friends   # stretch goal
+    # auto_now_add=True sets current date/time when object is first created
+    # auto_now=True sets field to the current date/time every time the object is saved
     
-    # decides how Django will show our model in admin panel
+
     # set it to show username as the Query object
     def __str__(self):
         return str(self.username)
     
     
+# The related_name attribute in the ForeignKey fields is extremely useful. 
+# It let’s us define a meaningful name for the reverse relationship.
     
 
 # ==== MusicStats model or Profile model?? === # 
 class MusicPost(models.Model):   # post that shows music stats
-    user = models.ForeignKey(AppUser, on_delete=models.CASCADE)
+    app_user = models.ForeignKey(AppUser, on_delete=models.CASCADE, related_name='music_posts')
     date = models.DateField(auto_now=True)
     # songs = models.CharField(max_length=255)   
     date_modified = models.DateTimeField(auto_now=True)
     date_published = models.DateTimeField(auto_now_add=True)
     # is_private = models.BooleanField     stretch goal
     
-    
+
 class MusicStat(models.Model):    # actual music stats
     title = models.CharField(max_length=255)
     artist = models.CharField(max_length=255)
