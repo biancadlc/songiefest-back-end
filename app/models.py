@@ -16,16 +16,14 @@ from autoslug import AutoSlugField # makes meaningful URLS users/thao
 
 class AppUser(models.Model):  
     first_name = models.CharField(max_length=30, blank=False)
-    last_name = models.CharField(max_length=30, null=False, blank=False)
-    email = models.CharField(unique=True, null=False, blank=False)
-    password = models.CharField(max_length=30, null=False, blank=False)
-    username = models.CharField(max_length=30, null=False, blank=False, unique=True)
-    date_modified = models.DateTimeField(auto_now=True)
+    last_name = models.CharField(max_length=30, blank=False)
+    email = models.CharField(unique=True, blank=False)
+    password = models.CharField(max_length=30, blank=False)
+    username = models.CharField(max_length=30, blank=False, unique=True)
+    lastfm_username = models.CharField(max_length=30, blank=False, unique=True)
+    lastfm_password = models.CharField(max_length=30, blank=False, unique=True)
     date_published = models.DateTimeField(auto_now_add=True)
-    lastfm_username = models.CharField(max_length=30, null=False, blank=False, unique=True)
-    lastfm_password = models.CharField(max_length=30, null=False, blank=False, unique=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    date_modified = models.DateTimeField(auto_now=True)
     
     # auto_now_add=True sets current date/time when object is first created
     # auto_now=True sets field to the current date/time every time the object is saved
@@ -79,6 +77,7 @@ class Comment(models.Model):
     app_user = models.ForeignKey(AppUser, related_name='comments', on_delete=models.CASCADE)
     comment = models.TextField(max_length=500)
     date_published = models.DateTimeField(auto_now_add=True)
+    date_modified = models.DateTimeField(auto_now=True)
     
     
 # ====== LIKES model   stores like info   ====== #
@@ -87,6 +86,8 @@ class Like(models.Model):
     user = models.ForeignKey(AppUser, related_name='likes', on_delete=models.CASCADE)
     music_post = models.ForeignKey(MusicPost, related_name='likes', on_delete=models.CASCADE)
     # post = the post on which the like is given, deleting post deletes all likes 
+    date_published = models.DateTimeField(auto_now_add=True)
+    date_modified = models.DateTimeField(auto_now=True)
 
     # use same ForeignKey, to differentiate need
     
@@ -106,6 +107,8 @@ class Profile(models.Model):
     bio = models.CharField(max_length=255, blank=True)
     # use AutoSlugField, set it to make a slug from username field
     slug = AutoSlugField(populate_from='app_user.username', unique=True)
+    date_published = models.DateTimeField(auto_now_add=True)
+    date_modified = models.DateTimeField(auto_now=True)
     
     
 
