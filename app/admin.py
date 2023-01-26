@@ -1,8 +1,8 @@
 from django.contrib import admin
-from .models import User, Profile, MusicStat, Comment, Like, MusicPost
+from .models import AppUser, Profile, MusicStat, Comment, Like, MusicPost
 
 # Register your models here.
-admin.site.register(User)
+admin.site.register(AppUser)
 admin.site.register(Profile)
 admin.site.register(MusicPost)
 admin.site.register(MusicStat)
