@@ -14,6 +14,10 @@ from pathlib import Path
 from decouple import config 
 
 
+# tells django use our custom User model not default
+AUTH_USER_MODEL = 'app.AppUser'
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 

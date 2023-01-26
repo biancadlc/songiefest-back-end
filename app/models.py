@@ -11,7 +11,9 @@ from autoslug import AutoSlugField # makes meaningful URLS users/thao
 # MUSIC STATS = POST? 
 # MODEL FOR ACCOUNT & PROFILE?
 
-class User(models.Model):  
+# changed name to AppUser to avoid confusion w/ Django's default User model
+# project's settings.py --> need to tell Django use custom model instead of default 
+class AppUser(models.Model):  
     username = models.CharField(max_length=36, null=False)
     first_name = models.CharField(max_length=36, null=False)
     last_name = models.CharField(max_length=36, null=False)
@@ -34,7 +36,7 @@ class User(models.Model):
 
 # ==== MusicStats model or Profile model?? === # 
 class MusicPost(models.Model):   # post that shows music stats
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(AppUser, on_delete=models.CASCADE)
     date = models.DateField(auto_now=True)
     # songs = models.CharField(max_length=255)   
     date_modified = models.DateTimeField(auto_now=True)
@@ -55,7 +57,7 @@ class MusicStat(models.Model):    # actual music stats
 # ===== COMMENT model  links comment w/ the post(music stat) & the user ===== #
 class Comment(models.Model):
     music_post= models.ForeignKey(MusicPost, related_name='comment', on_delete=models.CASCADE)
-    user = models.ForeignKey(User, related_name='comment', on_delete=models.CASCADE)
+    user = models.ForeignKey(AppUser, related_name='comment', on_delete=models.CASCADE)
     comment = models.TextField(max_length=500)
     date_published = models.DateTimeField(auto_now_add=True)
     
@@ -63,7 +65,7 @@ class Comment(models.Model):
 # ====== LIKES model   stores like info   ====== #
 class Like(models.Model):
     # user = represents user who liked post, deleting user deletes like
-    user = models.ForeignKey(User, related_name='like', on_delete=models.CASCADE)
+    user = models.ForeignKey(AppUser, related_name='like', on_delete=models.CASCADE)
     music_post = models.ForeignKey(MusicPost, related_name='like', on_delete=models.CASCADE)
     # post = the post on which the like is given, deleting post deletes all likes 
 
@@ -75,7 +77,7 @@ class Like(models.Model):
 class Profile(models.Model): 
     # 1:1 relationship w/ Django User model
     # if User deleted, profile destroyed too
-    user = models.OneToOneField(User, on_delete=models.CASCADE) 
+    user = models.OneToOneField(AppUser, on_delete=models.CASCADE) 
     # optional? for storing profile pic of user
     image = models.ImageField(default='default.png', upload_to='profile_pics') 
     # use AutoSlugField, set it to make a slug from user field
