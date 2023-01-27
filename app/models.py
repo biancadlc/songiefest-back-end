@@ -50,11 +50,11 @@ class MusicPost(models.Model):   # post that shows music stats
     # user can't be registered with exact email & name 
     
     
-class MusicStat(models.Model):    # actual music stats
+class Song(models.Model):    # actual music stats
     title = models.CharField(max_length=255)
     artist = models.CharField(max_length=255)
     album = models.CharField(max_length=255)
-    music_post = models.ForeignKey(MusicPost, on_delete=models.CASCADE, related_name='music_stats')
+    music_post = models.ForeignKey(MusicPost, on_delete=models.CASCADE, related_name='songs')
     play_count = models.IntegerField(null=True)
     date_published = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
