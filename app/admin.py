@@ -8,3 +8,10 @@ admin.site.register(MusicPost)
 admin.site.register(Song)
 admin.site.register(Comment)
 admin.site.register(Like)
+
+
+# test to see that CRUD operations work on User model
+# class UserAdmin(admin.ModelAdmin):
+#     list_display = ('first_name', 'last_name', 'username', 'email', 'password', 'lastfm_username', \
+#         'lastfm_password', 'date_published', 'date_modified')
+
